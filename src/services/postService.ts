@@ -22,10 +22,25 @@ export const getAllPosts = async () => {
     })
 }
 
+export const searchPosts = async (searchTitle: string, pageNum: number, pageSize: number) => {
+    return new Promise(async(resolve, reject) => {
+
+        const filteredPosts = await Post.find({
+            title: { $regex: searchTitle, $options: "i" },
+        }
+        ).skip(pageSize * (pageNum-1))
+        .limit(pageSize)
+
+        // let total = Post.find({
+        //     title: { $regex: searchString, $options: "i" }
+        // }).countDocuments()
+        resolve(filteredPosts)
+    })
+}
+
 export const deletePostById = async (postId: String) => {
     return new Promise(async(resolve, reject) => {
         const deletePost = await Post.findByIdAndDelete(postId)
-        console.log(`deleted post ${deletePost}`)
         if (deletePost) resolve(`Post id ${postId} deleted`)
         else {
             reject(`Post id ${postId} not found`)

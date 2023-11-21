@@ -6,10 +6,6 @@ export interface IPost extends Document {
 }
 
 const PostSchema: Schema = new Schema({
-    id: {
-        type: Number,
-        required: true
-    },
     title: {
         type: String,
         required: true

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updatePostById = exports.deletePostById = exports.getAllPosts = exports.addNewPost = void 0;
+exports.updatePostById = exports.deletePostById = exports.searchPosts = exports.getAllPosts = exports.addNewPost = void 0;
 const Post_1 = require("../models/Post");
 const addNewPost = async (postDescription) => {
     return new Promise(async (resolve, reject) => {
@@ -24,10 +24,22 @@ const getAllPosts = async () => {
     });
 };
 exports.getAllPosts = getAllPosts;
+const searchPosts = async (searchTitle, pageNum, pageSize) => {
+    return new Promise(async (resolve, reject) => {
+        const filteredPosts = await Post_1.Post.find({
+            title: { $regex: searchTitle, $options: "i" },
+        }).skip(pageSize * (pageNum - 1))
+            .limit(pageSize);
+        // let total = Post.find({
+        //     title: { $regex: searchString, $options: "i" }
+        // }).countDocuments()
+        resolve(filteredPosts);
+    });
+};
+exports.searchPosts = searchPosts;
 const deletePostById = async (postId) => {
     return new Promise(async (resolve, reject) => {
         const deletePost = await Post_1.Post.findByIdAndDelete(postId);
-        console.log(`deleted post ${deletePost}`);
         if (deletePost)
             resolve(`Post id ${postId} deleted`);
         else {

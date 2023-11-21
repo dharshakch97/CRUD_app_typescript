@@ -1,5 +1,5 @@
 import { Request, Response, Router } from 'express'
-import { addNewPost, deletePostById, getAllPosts, updatePostById } from '../services/postService'
+import { addNewPost, deletePostById, getAllPosts, searchPosts, updatePostById } from '../services/postService'
 
 const router = Router() 
 
@@ -13,6 +13,16 @@ export const createNewPost = async (req: Request, res: Response) => {
 
 export const fetchAllPosts = async (req: Request, res: Response) => {
     await getAllPosts()
+    .then((response: any) => { res.status(200).json({status: "success", response: response}) })
+    .catch((error) => { res.status(401).send({status: "error",response: error}) })
+}
+
+export const filteredPosts = async (req: Request, res: Response) => {
+    let requestData: any = req.body
+    let pageNo: number = requestData.page_no ? requestData.page_no: 1
+    let pageSize: number = requestData.size ? requestData.size: 10
+    let searchTitle: string = req.body.search_title
+    await searchPosts(searchTitle, pageNo, pageSize)
     .then((response: any) => { res.status(200).json({status: "success", response: response}) })
     .catch((error) => { res.status(401).send({status: "error",response: error}) })
 }

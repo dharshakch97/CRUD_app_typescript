@@ -8,4 +8,6 @@ router.get('/', postController.fetchAllPosts)
 router.patch('/', postController.updatePost)
 router.delete('/', postController.deletePost)
 
+router.get('/search', postController.filteredPosts)
+
 export default router

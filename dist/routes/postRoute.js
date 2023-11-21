@@ -30,5 +30,6 @@ router.post('/', postController.createNewPost);
 router.get('/', postController.fetchAllPosts);
 router.patch('/', postController.updatePost);
 router.delete('/', postController.deletePost);
+router.get('/search', postController.filteredPosts);
 exports.default = router;
 //# sourceMappingURL=postRoute.js.map
