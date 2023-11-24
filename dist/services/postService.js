@@ -24,8 +24,14 @@ const getAllPosts = async () => {
     });
 };
 exports.getAllPosts = getAllPosts;
-const searchPosts = async (searchTitle, pageNum, pageSize) => {
+const searchPosts = async (searchTitle, searchDesc, pageNum, pageSize) => {
     return new Promise(async (resolve, reject) => {
+        let whereObject = { $and: [
+                { title: (searchTitle) ? { $regex: searchTitle, $options: "i" } : { $ne: null } },
+                { description: (searchDesc) ? { $regex: searchDesc, $options: "i" } : { $ne: null } }
+            ] };
+        console.log(JSON.stringify(whereObject));
+        const filteredPost = await Post_1.Post.find(whereObject);
         const filteredPosts = await Post_1.Post.find({
             title: { $regex: searchTitle, $options: "i" },
         }).skip(pageSize * (pageNum - 1))
@@ -33,7 +39,7 @@ const searchPosts = async (searchTitle, pageNum, pageSize) => {
         // let total = Post.find({
         //     title: { $regex: searchString, $options: "i" }
         // }).countDocuments()
-        resolve(filteredPosts);
+        resolve(filteredPost);
     });
 };
 exports.searchPosts = searchPosts;

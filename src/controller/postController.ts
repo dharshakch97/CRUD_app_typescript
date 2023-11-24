@@ -22,7 +22,8 @@ export const filteredPosts = async (req: Request, res: Response) => {
     let pageNo: number = requestData.page_no ? requestData.page_no: 1
     let pageSize: number = requestData.size ? requestData.size: 10
     let searchTitle: string = req.body.search_title
-    await searchPosts(searchTitle, pageNo, pageSize)
+    let searchDesc: string = req.body.search_desc
+    await searchPosts(searchTitle, searchDesc, pageNo, pageSize)
     .then((response: any) => { res.status(200).json({status: "success", response: response}) })
     .catch((error) => { res.status(401).send({status: "error",response: error}) })
 }

@@ -22,7 +22,8 @@ const filteredPosts = async (req, res) => {
     let pageNo = requestData.page_no ? requestData.page_no : 1;
     let pageSize = requestData.size ? requestData.size : 10;
     let searchTitle = req.body.search_title;
-    await (0, postService_1.searchPosts)(searchTitle, pageNo, pageSize)
+    let searchDesc = req.body.search_desc;
+    await (0, postService_1.searchPosts)(searchTitle, searchDesc, pageNo, pageSize)
         .then((response) => { res.status(200).json({ status: "success", response: response }); })
         .catch((error) => { res.status(401).send({ status: "error", response: error }); });
 };
